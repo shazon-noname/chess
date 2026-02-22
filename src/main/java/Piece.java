@@ -1,3 +1,6 @@
+import javax.swing.*;
+import java.io.IOException;
+
 public abstract class Piece {
     protected int y,x;
     protected boolean isWhite;
@@ -11,4 +14,6 @@ public abstract class Piece {
     public abstract boolean isValidMove(int targetY, int targetX, Piece[][] board);
 
     public abstract String getSymbol();
+
+    public abstract Icon getIcon() throws IOException;
 }

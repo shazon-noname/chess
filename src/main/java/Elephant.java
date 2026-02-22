@@ -1,14 +1,14 @@
 import javax.swing.*;
 import java.io.IOException;
 
-public class Rook extends Piece {
-    public Rook(int y, int x, boolean isWhite) {
-        super(y, x, isWhite);
+public class Elephant extends Piece {
+    public Elephant(int targetY, int targetX, boolean isWhite) {
+        super(targetY, targetX, isWhite);
     }
 
     @Override
     public boolean isValidMove(int targetY, int targetX, Piece[][] board) {
-        if (targetY != this.y && targetX != this.x) {
+        if (!(targetY != this.y && targetX != this.x)) {
             return false;
         }
 
@@ -29,15 +29,17 @@ public class Rook extends Piece {
         Piece targetPiece = board[targetY][targetX];
 
         return targetPiece == null || targetPiece.isWhite != this.isWhite;
+
     }
 
     @Override
     public String getSymbol() {
-        return isWhite ? "♖" : "♜";
+        return isWhite ? "♗" : "♝"
+                ;
     }
 
     @Override
     public Icon getIcon() throws IOException {
-        return PieceIcons.rook(isWhite, 50);
+        return PieceIcons.elephant(isWhite, 50);
     }
 }

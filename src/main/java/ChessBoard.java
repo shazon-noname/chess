@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class ChessBoard extends JFrame {
     private Piece selectedPiece = null;
@@ -7,16 +8,16 @@ public class ChessBoard extends JFrame {
     private JButton[][] squares = new JButton[SIZE][SIZE];
     private Piece[][] board = new Piece[SIZE][SIZE];
 
-    public ChessBoard() {
+    public ChessBoard() throws IOException {
         setTitle("Java Chess");
-        setSize(1280, 720);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(SIZE, SIZE));
         initializeBoard();
         setVisible(true);
     }
 
-    private void initializeBoard() {
+    private void initializeBoard() throws IOException {
         board[6][0] = new Pawn(6, 0, true);
         board[6][1] = new Pawn(6, 1, true);
         board[6][2] = new Pawn(6, 2, true);
@@ -35,6 +36,12 @@ public class ChessBoard extends JFrame {
         board[1][6] = new Pawn(1, 6, false);
         board[1][7] = new Pawn(1, 7, false);
 
+        board[7][2] = new Elephant(7, 2, true);
+        board[0][2] = new Elephant(0, 2, false);
+        board[7][5] = new Elephant(7, 5, true);
+        board[0][5] = new Elephant(0, 5, false);
+
+
         board[7][0] = new Rook(7, 0, true);
         board[7][7] = new Rook(7, 7, true);
         board[0][0] = new Rook(0, 0, false);
@@ -51,7 +58,17 @@ public class ChessBoard extends JFrame {
                     jButton.setBackground(Color.DARK_GRAY);
                 }
                 if (board[row][col] != null) {
-                    jButton.setText(board[row][col].getSymbol());
+                    Icon icon = board[row][col].getIcon();
+                    if (icon != null) {
+                        jButton.setIcon(icon);
+                        jButton.setText("");
+                    } else {
+                        jButton.setIcon(null);
+                        jButton.setText(board[row][col].getSymbol());
+                    }
+                } else {
+                    jButton.setIcon(null);
+                    jButton.setText("");
                 }
                 squares[row][col] = jButton;
                 add(jButton);
@@ -87,15 +104,28 @@ public class ChessBoard extends JFrame {
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
                 if (board[row][col] != null) {
-                    squares[row][col].setText(board[row][col].getSymbol());
+                    Icon icon = null;
+                    try {
+                        icon = board[row][col].getIcon();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if (icon != null) {
+                        squares[row][col].setIcon(icon);
+                        squares[row][col].setText("");
+                    } else {
+                        squares[row][col].setIcon(null);
+                        squares[row][col].setText(board[row][col].getSymbol());
+                    }
                 } else {
+                    squares[row][col].setIcon(null);
                     squares[row][col].setText("");
                 }
             }
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new ChessBoard();
     }
 }
