@@ -8,20 +8,26 @@ public class Pawn extends Piece {
 
     @Override
     public boolean isValidMove(int targetY, int targetX, Piece[][] board) {
-        if (isWhite) {
-            if (this.y == 6 && targetY == this.y - 2) {
-                return board[targetY][targetX] == null;
-            } else if (targetY == this.y - 1 && targetX == this.x) {
-                return board[targetY][targetX] == null;
+        int direction = isWhite ? -1 : 1;
+        int startRow = isWhite ? 6 : 1;
+
+        if (targetY == this.y + direction && targetX == this.x) {
+            Piece targetPiece = board[targetY][targetX];
+            return targetPiece == null || this.isWhite != targetPiece.isWhite;
+        }
+        if (this.y == startRow && targetY == this.y + 2 * direction && this.x == targetX) {
+            if (board[this.y + direction][this.x] != null) {
+                return false;
             }
-        } else {
-            if (this.y == 1 && targetY == this.y + 2) {
-                return board[targetY][targetX] == null;
-            } else if (targetY == this.y + 1 && targetX == this.x) {
-                return board[targetY][targetX] == null;
-            }
+            Piece targePiece = board[targetY][targetX];
+            return targePiece == null || this.isWhite != targePiece.isWhite;
+        }
+        if (targetY == this.y + direction && Math.abs(targetX - this.x) == 1) {
+            Piece targePiece = board[targetY][targetX];
+            return targePiece != null && targePiece.isWhite != this.isWhite;
         }
         return false;
+
     }
 
     @Override
