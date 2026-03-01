@@ -13,14 +13,14 @@ public class Pawn extends Piece {
 
         if (targetY == this.y + direction && targetX == this.x) {
             Piece targetPiece = board[targetY][targetX];
-            return targetPiece == null || this.isWhite != targetPiece.isWhite;
+            return targetPiece == null;
         }
         if (this.y == startRow && targetY == this.y + 2 * direction && this.x == targetX) {
             if (board[this.y + direction][this.x] != null) {
                 return false;
             }
             Piece targePiece = board[targetY][targetX];
-            return targePiece == null || this.isWhite != targePiece.isWhite;
+            return targePiece == null;
         }
         if (targetY == this.y + direction && Math.abs(targetX - this.x) == 1) {
             Piece targePiece = board[targetY][targetX];

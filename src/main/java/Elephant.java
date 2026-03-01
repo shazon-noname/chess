@@ -8,7 +8,7 @@ public class Elephant extends Piece {
 
     @Override
     public boolean isValidMove(int targetY, int targetX, Piece[][] board) {
-        if (!(targetY != this.y && targetX != this.x)) {
+        if (Math.abs(targetY - this.y) != Math.abs(targetX - this.x)) {
             return false;
         }
 
@@ -18,7 +18,7 @@ public class Elephant extends Piece {
         int currentY = this.y + stepY;
         int currentX = this.x + stepX;
 
-        while (currentY != targetY || currentX != targetX) {
+        while (currentY != targetY && currentX != targetX) {
             if (board[currentY][currentX] != null) {
                 return false;
             }
