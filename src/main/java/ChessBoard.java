@@ -47,6 +47,9 @@ public class ChessBoard extends JFrame {
         board[0][0] = new Rook(0, 0, false);
         board[0][7] = new Rook(0, 7, false);
 
+        board[7][3] = new Queen(7, 3, true);
+        board[0][3] = new Queen(0, 3, false);
+
 
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
