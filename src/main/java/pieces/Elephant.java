@@ -36,8 +36,7 @@ public class Elephant extends Piece {
 
     @Override
     public String getSymbol() {
-        return isWhite ? "♗" : "♝"
-                ;
+        return isWhite ? "♗" : "♝";
     }
 
     @Override

@@ -3,12 +3,15 @@ import pieces.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ChessBoard extends JFrame {
     private Piece selectedPiece = null;
     private final int SIZE = 8;
     private final JButton[][] squares = new JButton[SIZE][SIZE];
     private final Piece[][] board = new Piece[SIZE][SIZE];
+    private boolean currentTurnIsWhite = true;
+    private final ArrayList<Move> moveHistory = new ArrayList<>();
 
     public ChessBoard() throws IOException {
         setTitle("Java Chess");
@@ -90,13 +93,25 @@ public class ChessBoard extends JFrame {
                 jButton.addActionListener(_ -> {
 
                     if (selectedPiece == null) {
-                        selectedPiece = board[currentRow][currentCol];
+                        if (board[currentRow][currentCol] != null
+                                && board[currentRow][currentCol].isWhite() == currentTurnIsWhite) {
+                            selectedPiece = board[currentRow][currentCol];
+                        }
                     } else {
                         if (selectedPiece.isValidMove(currentRow, currentCol, board)) {
+                            Piece capturedPiece = board[currentRow][currentCol];
+                            Move move = new Move(selectedPiece, selectedPiece.getX(), selectedPiece.getY(),
+                                    currentCol, currentRow, capturedPiece);
+                            moveHistory.add(move);
+                            System.out.println(move);
+
                             board[selectedPiece.getY()][selectedPiece.getX()] = null;
 
                             selectedPiece.setY(currentRow);
                             selectedPiece.setX(currentCol);
+
+                            currentTurnIsWhite = !currentTurnIsWhite;
+                            System.out.println("Current turn: " + (currentTurnIsWhite ? "White" : "Black"));
 
                             board[currentRow][currentCol] = selectedPiece;
                         } else {
@@ -136,7 +151,15 @@ public class ChessBoard extends JFrame {
         }
     }
 
+    public void printMoveHistory() {
+        System.out.println("=== Move history ===");
+        for (int i = 0; i < moveHistory.size() ; i++) {
+            System.out.println((i+1) + ". " + moveHistory.get(i));
+        }
+    }
+
     static void main() throws IOException {
-        new ChessBoard();
+        ChessBoard chessBoard = new ChessBoard();
+        chessBoard.printMoveHistory();
     }
 }
