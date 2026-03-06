@@ -62,4 +62,7 @@ public class PieceIcons {
     public static Icon pawn(boolean isWhite, int sizePx) throws IOException {
         return getIcon(5, isWhite, sizePx);
     }
+    public static Icon king(boolean isWhite, int sizePx) throws IOException {
+        return getIcon(0, isWhite, sizePx);
+    }
 }

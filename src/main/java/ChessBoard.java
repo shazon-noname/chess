@@ -7,8 +7,8 @@ import java.io.IOException;
 public class ChessBoard extends JFrame {
     private Piece selectedPiece = null;
     private final int SIZE = 8;
-    private JButton[][] squares = new JButton[SIZE][SIZE];
-    private Piece[][] board = new Piece[SIZE][SIZE];
+    private final JButton[][] squares = new JButton[SIZE][SIZE];
+    private final Piece[][] board = new Piece[SIZE][SIZE];
 
     public ChessBoard() throws IOException {
         setTitle("Java Chess");
@@ -43,7 +43,6 @@ public class ChessBoard extends JFrame {
         board[7][5] = new Elephant(7, 5, true);
         board[0][5] = new Elephant(0, 5, false);
 
-
         board[7][0] = new Rook(7, 0, true);
         board[7][7] = new Rook(7, 7, true);
         board[0][0] = new Rook(0, 0, false);
@@ -52,6 +51,13 @@ public class ChessBoard extends JFrame {
         board[7][3] = new Queen(7, 3, true);
         board[0][3] = new Queen(0, 3, false);
 
+        board[7][4] = new King(7, 4, true);
+        board[0][4] = new King(0, 4, false);
+
+        board[7][1] = new Knight(7, 1, true);
+        board[7][6] = new Knight(7, 6, true);
+        board[0][1] = new Knight(0, 1, false);
+        board[0][6] = new Knight(0, 6, false);
 
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
@@ -81,7 +87,7 @@ public class ChessBoard extends JFrame {
                 final int currentRow = row;
                 final int currentCol = col;
 
-                jButton.addActionListener(e -> {
+                jButton.addActionListener(_ -> {
 
                     if (selectedPiece == null) {
                         selectedPiece = board[currentRow][currentCol];
@@ -109,7 +115,7 @@ public class ChessBoard extends JFrame {
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
                 if (board[row][col] != null) {
-                    Icon icon = null;
+                    Icon icon;
                     try {
                         icon = board[row][col].getIcon();
                     } catch (IOException e) {
@@ -130,7 +136,7 @@ public class ChessBoard extends JFrame {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    static void main() throws IOException {
         new ChessBoard();
     }
 }
