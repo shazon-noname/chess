@@ -1,3 +1,5 @@
+package pieces;
+
 import javax.swing.*;
 import java.io.IOException;
 
@@ -16,4 +18,28 @@ public abstract class Piece {
     public abstract String getSymbol();
 
     public abstract Icon getIcon() throws IOException;
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public boolean isWhite() {
+        return isWhite;
+    }
+
+    public void setWhite(boolean white) {
+        isWhite = white;
+    }
 }

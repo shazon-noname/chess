@@ -1,3 +1,5 @@
+import pieces.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -85,10 +87,10 @@ public class ChessBoard extends JFrame {
                         selectedPiece = board[currentRow][currentCol];
                     } else {
                         if (selectedPiece.isValidMove(currentRow, currentCol, board)) {
-                            board[selectedPiece.y][selectedPiece.x] = null;
+                            board[selectedPiece.getY()][selectedPiece.getX()] = null;
 
-                            selectedPiece.y = currentRow;
-                            selectedPiece.x = currentCol;
+                            selectedPiece.setY(currentRow);
+                            selectedPiece.setX(currentCol);
 
                             board[currentRow][currentCol] = selectedPiece;
                         } else {
