@@ -35,6 +35,11 @@ public class Elephant extends Piece {
     }
 
     @Override
+    public Piece copy() {
+        return new Elephant(this.y, this.x, this.isWhite);
+    }
+
+    @Override
     public String getSymbol() {
         return isWhite ? "♗" : "♝";
     }

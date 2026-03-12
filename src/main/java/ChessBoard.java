@@ -1,3 +1,4 @@
+import logic.GameLogic;
 import logic.Move;
 import pieces.*;
 
@@ -13,6 +14,7 @@ public class ChessBoard extends JFrame {
     private final Piece[][] board = new Piece[SIZE][SIZE];
     private boolean currentTurnIsWhite = true;
     private final ArrayList<Move> moveHistory = new ArrayList<>();
+    private final GameLogic gameLogic = new GameLogic();
 
     public ChessBoard() throws IOException {
         setTitle("Java Chess");
@@ -93,14 +95,20 @@ public class ChessBoard extends JFrame {
                             System.out.println(move);
 
                             board[selectedPiece.getY()][selectedPiece.getX()] = null;
-
                             selectedPiece.setY(currentRow);
                             selectedPiece.setX(currentCol);
+                            board[currentRow][currentCol] = selectedPiece;
+
+                            boolean opponentInCheck = gameLogic.isKingInCheck(board, !currentTurnIsWhite);
+                            if (opponentInCheck) {
+                                System.out.println("CHECK!");
+                                if (gameLogic.isCheckMate(board, !currentTurnIsWhite)) {
+                                    System.out.println("CHECKMATE! " + (currentTurnIsWhite ? "White" : "Black") + " wins!");
+                                }
+                            }
 
                             currentTurnIsWhite = !currentTurnIsWhite;
                             System.out.println("Current turn: " + (currentTurnIsWhite ? "White" : "Black"));
-
-                            board[currentRow][currentCol] = selectedPiece;
                         } else {
                             System.out.println("Invalid move");
                         }
@@ -164,8 +172,8 @@ public class ChessBoard extends JFrame {
 
     public void printMoveHistory() {
         System.out.println("=== logic.Move history ===");
-        for (int i = 0; i < moveHistory.size() ; i++) {
-            System.out.println((i+1) + ". " + moveHistory.get(i));
+        for (int i = 0; i < moveHistory.size(); i++) {
+            System.out.println((i + 1) + ". " + moveHistory.get(i));
         }
     }
 }

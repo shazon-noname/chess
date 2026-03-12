@@ -34,6 +34,11 @@ public class Rook extends Piece {
     }
 
     @Override
+    public Piece copy() {
+        return new Rook(this.y, this.x, this.isWhite);
+    }
+
+    @Override
     public String getSymbol() {
         return isWhite ? "♖" : "♜";
     }

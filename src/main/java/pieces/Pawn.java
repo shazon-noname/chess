@@ -33,6 +33,11 @@ public class Pawn extends Piece {
     }
 
     @Override
+    public Piece copy() {
+        return new Pawn(this.y, this.x, this.isWhite);
+    }
+
+    @Override
     public String getSymbol() {
         return isWhite ? "♙" : "♟";
     }

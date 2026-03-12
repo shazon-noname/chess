@@ -24,6 +24,11 @@ public class King extends Piece {
     }
 
     @Override
+    public Piece copy() {
+        return new King(this.y, this.x, this.isWhite);
+    }
+
+    @Override
     public String getSymbol() {
         return isWhite ? "♔" : "♚";
     }

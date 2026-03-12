@@ -40,6 +40,11 @@ public class Queen extends Piece {
     }
 
     @Override
+    public Piece copy() {
+        return new Queen(this.y, this.x, this.isWhite);
+    }
+
+    @Override
     public String getSymbol() {
         return isWhite ? "♕" : "♛";
     }

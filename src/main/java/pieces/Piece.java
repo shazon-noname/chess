@@ -19,6 +19,8 @@ public abstract class Piece {
 
     public abstract Icon getIcon() throws IOException;
 
+    public abstract Piece copy();
+
     public int getY() {
         return y;
     }

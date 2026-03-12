@@ -4,7 +4,7 @@ import pieces.King;
 import pieces.Piece;
 
 public class GameLogic {
-    public boolean isKingSafe(Piece[][] board, boolean isWhiteKing) {
+    public boolean isKingInCheck(Piece[][] board, boolean isWhiteKing) {
         int kingX = -1, kingY = -1;
         for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board.length; x++) {
@@ -16,25 +16,25 @@ public class GameLogic {
             }
         }
 
-        for (Piece[] pieces : board) {
+        for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board.length; x++) {
-                if (pieces[x] != null && pieces[x].isWhite() != isWhiteKing) {
-                    if (pieces[x].isValidMove(kingY, kingX, board)) {
-                        return false; // King is in check, so not safe
+                if (board[y][x] != null && board[y][x].isWhite() != isWhiteKing) {
+                    if (board[y][x].isValidMove(kingY, kingX, board)) {
+                        return true;
                     }
                 }
             }
         }
-        return true;
+        return false;
     }
 
     public boolean isCheckMate(Piece[][] board, boolean isWhiteKing) {
-        if (isKingSafe(board, isWhiteKing)) {
+        if (!isKingInCheck(board, isWhiteKing)) {
             return false;
         }
         for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board.length; x++) {
-                if (hasAnyValidMove(board[y][x], y, x, board)) {
+                if (hasAnyValidMove(board[y][x], y, x, board, isWhiteKing)) {
                     return false;
                 }
             }
@@ -42,8 +42,8 @@ public class GameLogic {
         return true;
     }
 
-    private boolean hasAnyValidMove(Piece piece, int fromY, int fromX, Piece[][] board) {
-        if (piece == null) {
+    private boolean hasAnyValidMove(Piece piece, int fromY, int fromX, Piece[][] board, boolean isWhiteKing) {
+        if (piece == null || piece.isWhite() != isWhiteKing) {
             return false;
         }
         for (int toY = 0; toY < board.length; toY++) {
@@ -60,20 +60,33 @@ public class GameLogic {
 
     private boolean wouldMoveBeLegal(int fromY, int fromX, int toY, int toX, Piece[][] board) {
         Piece[][] tempBoard = copyBoard(board);
+        Piece movingPiece = tempBoard[fromY][fromX];
 
-        tempBoard[toY][toX] = board[fromY][fromX];
+        int originalX = movingPiece.getX();
+        int originalY = movingPiece.getY();
+
+        tempBoard[toY][toX] = movingPiece;
         tempBoard[fromY][fromX] = null;
+        movingPiece.setX(toX);
+        movingPiece.setY(toY);
 
-        boolean isWhite = tempBoard[toY][toX].isWhite();
+        boolean isWhite = movingPiece.isWhite();
+        boolean legal = !isKingInCheck(tempBoard, isWhite);
 
-        return isKingSafe(tempBoard, isWhite);
+        movingPiece.setX(originalX);
+        movingPiece.setY(originalY);
 
+        return legal;
     }
 
     private Piece[][] copyBoard(Piece[][] board) {
         Piece[][] result = new Piece[board.length][board.length];
         for (int y = 0; y < board.length; y++) {
-            System.arraycopy(board[y], 0, result[y], 0, board.length);
+            for (int x = 0; x < board.length; x++) {
+                if (board[y][x] != null) {
+                    result[y][x] = board[y][x].copy();
+                }
+            }
         }
         return result;
     }

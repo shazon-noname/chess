@@ -26,6 +26,11 @@ public class Knight extends  Piece
     }
 
     @Override
+    public Piece copy() {
+        return new Knight(this.y, this.x, this.isWhite);
+    }
+
+    @Override
     public String getSymbol() {
         return isWhite ? "♘" : "♞";
     }
