@@ -1,3 +1,5 @@
+package logic;
+
 import pieces.Piece;
 
 public class Move {
